@@ -26,17 +26,17 @@ jobs:
 
       - name: Install Frontend Dependencies
         run: |
-          cd https://github.com/MindfulMichaelJames/star-wars/tree/main
+          cd MindfulMichaelJames/star-wars/tree/main
           yarn install
 
       - name: Build Frontend Application
         run: |
-          cd https://github.com/MindfulMichaelJames/star-wars/tree/main  # Navigate to the frontend directory (replace with your path)
+          cd MindfulMichaelJames/star-wars/tree/main  # Navigate to the frontend directory (replace with your path)
           yarn build
 
       - name: Start Frontend Application
         run: |
-          cd https://github.com/MindfulMichaelJames/star-wars/tree/main  # Navigate to the frontend directory (replace with your path)
+          cd MindfulMichaelJames/star-wars/tree/main  # Navigate to the frontend directory (replace with your path)
           yarn start &
 
           # Wait for the application to start (adjust as needed)
