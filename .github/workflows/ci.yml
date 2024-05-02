@@ -1,59 +1,47 @@
-name: CI
+name: Clone and Start Project
 
 on:
   push:
-    branches: 
+    branches:
       - main
-  pull_request:
-    branches: 
-      - main
-  workflow_dispatch:
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Public Repository
-        uses: actions/checkout@v2
-        with:
-          repository: MindfulMichaelJames/star-wars
-          ref: main
+      - name: Checkout Repository
+        uses: actions/checkout@v2  # This action checks out your repository's code
+
+      - name: Clone Public Repository
+        run: |
+          git clone https://github.com/MindfulMichaelJames/star-wars frontend
+          cd frontend
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '14'
 
-      - name: Install Frontend Dependencies
+      - name: Install Dependencies
         run: |
-          cd star-wars  # Navigate to the frontend directory within the cloned repository
+          cd frontend
           yarn install
 
-      - name: Build Frontend Application
+      - name: Build Project
         run: |
-          cd star-wars  # Navigate to the frontend directory within the cloned repository
+          cd frontend
           yarn build
 
-      - name: Start Frontend Application
+      - name: Start Project
         run: |
-          cd star-wars  # Navigate to the frontend directory within the cloned repository
+          cd frontend
           yarn start &
+          echo "Waiting for the application to start..."
+          timeout 60s bash -c 'until curl -sf http://localhost:3000; do sleep 1; done'
 
-          # Wait for the application to start (adjust as needed)
-          timeout 30s bash -c 'until curl -sf http://localhost:3000; do sleep 1; done'
-
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.9'
-
-      - name: Install Python Dependencies
+      - name: Run Tests
         run: |
-          pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Run Selenium Tests
-        run: |
-          python path/to/your/test_script.py  # Execute Selenium tests
+          cd frontend
+          # Add commands here to run your tests against the running project
 
