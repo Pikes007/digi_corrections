@@ -46,8 +46,7 @@ jobs:
     - name: Start Application
       run: |
         yarn start 
-        echo "Waiting for the application to start..."
-        sleep(20)
+        sleep 20
 
     - name: Clone Test Suite Repository
       uses: actions/checkout@v2
