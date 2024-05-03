@@ -17,8 +17,8 @@ jobs:
       - name: Checkout Application Repository
         uses: actions/checkout@v2
         with:
-          repository: MindfulMichaelJames/star-wars  # Specify your application repository
-          path: frontend  # Clone the application code into 'frontend' directory
+          repository: MindfulMichaelJames/star-wars  
+          path: frontend  
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -45,14 +45,14 @@ jobs:
       - name: Clone Test Suite Repository
         uses: actions/checkout@v2
         with:
-          repository: Pikes007/sw_requirements  # Specify your test suite repository
+          repository: Pikes007/sw_requirements  
           ref: main
-          path: tests  # Clone the test suite into 'tests' directory
+          path: tests  
           
       - name: Install Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.12.3'  # Specify the desired Python version
+          python-version: '3.12.3'  
   
       - name: Install Test Dependencies
         run: |
@@ -65,6 +65,6 @@ jobs:
           cd tests
           pytest -v -s || exit 1 # Execute Python tests using pytest
 
-      # Additional steps can be added here for further actions or notifications
+      
 
 
