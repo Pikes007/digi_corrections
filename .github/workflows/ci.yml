@@ -45,7 +45,7 @@ jobs:
 
     - name: Start Application
       run: |
-        yarn start &
+        yarn start 
         echo "Waiting for the application to start..."
         timeout 60s bash -c 'until curl -sf http://localhost:3000; do sleep 1; done'
 
