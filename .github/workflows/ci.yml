@@ -54,7 +54,7 @@ jobs:
       with:
         repository: Pikes007/sw_requirements  
         ref: main
-        path: tests  
+        path: Pikes007/sw_requirements/tree/main/tests 
           
     - name: Install Python
       uses: actions/setup-python@v2
