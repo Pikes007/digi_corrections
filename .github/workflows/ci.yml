@@ -13,6 +13,10 @@ jobs:
   build:
     runs-on: windows-latest
 
+    defaults:
+      run:
+        working-directory: frontend
+
     steps:
     - name: Setup Chrome and Chromedriver
       uses: browser-actions/setup-chrome@latest
@@ -33,17 +37,14 @@ jobs:
 
     - name: Install Application Dependencies
       run: |
-        cd frontend
         yarn install
 
     - name: Build Application
       run: |
-        cd frontend
         yarn build
 
     - name: Start Application
       run: |
-        cd frontend
         yarn start &
         echo "Waiting for the application to start..."
         timeout 60s bash -c 'until curl -sf http://localhost:3000; do sleep 1; done'
