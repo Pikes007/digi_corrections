@@ -59,6 +59,15 @@ jobs:
           cd tests
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+
+      - name: Update ChromeDriver
+        run: |
+          # Install or update ChromeDriver
+          curl -L -o chromedriver.zip https://chromedriver.storage.googleapis.com/LATEST_RELEASE
+          unzip chromedriver.zip
+          chmod +x chromedriver
+          sudo mv chromedriver /usr/local/bin/chromedriver
+
           
       - name: Run Python Tests
         run: |
