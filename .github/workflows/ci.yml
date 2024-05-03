@@ -42,17 +42,18 @@ jobs:
           echo "Waiting for the application to start..."
           timeout 60s bash -c 'until curl -sf http://localhost:3000; do sleep 1; done'
 
-      - name: Install Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.12.3'  # Specify the desired Python version
-
       - name: Clone Test Suite Repository
         uses: actions/checkout@v2
         with:
           repository: Pikes007/sw_requirements  # Specify your test suite repository
+          ref: main
           path: tests  # Clone the test suite into 'tests' directory
-
+          
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.12.3'  # Specify the desired Python version
+  
       - name: Install Test Dependencies
         run: |
           cd tests
@@ -62,7 +63,7 @@ jobs:
       - name: Run Python Tests
         run: |
           cd tests
-          pytest -v -s  # Execute Python tests using pytest
+          pytest -v -s || exit 1 # Execute Python tests using pytest
 
       # Additional steps can be added here for further actions or notifications
 
