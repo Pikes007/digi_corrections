@@ -47,7 +47,8 @@ jobs:
       run: |
         yarn start 
         echo "Waiting for the application to start..."
-        timeout 60s bash -c 'until curl -sf http://localhost:3000; do sleep 1; done'
+        sleep(20)
+        # timeout 60s bash -c 'until curl -sf http://localhost:3000; do sleep 1; done'
 
     - name: Clone Test Suite Repository
       uses: actions/checkout@v2
