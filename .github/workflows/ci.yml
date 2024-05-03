@@ -1,11 +1,11 @@
-name: Clone and Start Project
+name: Build and Test Project
 
 on:
   push:
-    branches: 
+    branches:
       - main
   pull_request:
-    branches: 
+    branches:
       - main
   workflow_dispatch:
 
@@ -14,38 +14,56 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2  # This action checks out your repository's code
-
-      - name: Clone Public Repository
-        run: |
-          git clone https://github.com/MindfulMichaelJames/star-wars frontend
-          cd frontend
+      - name: Checkout Application Repository
+        uses: actions/checkout@v2
+        with:
+          repository: MindfulMichaelJames/star-wars  # Specify your application repository
+          path: frontend  # Clone the application code into 'frontend' directory
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '21.2.0'
 
-      - name: Install Dependencies
+      - name: Install Application Dependencies
         run: |
           cd frontend
           yarn install
 
-      - name: Build Project
+      - name: Build Application
         run: |
           cd frontend
           yarn build
 
-      - name: Start Project
+      - name: Start Application
         run: |
           cd frontend
           yarn start &
           echo "Waiting for the application to start..."
           timeout 60s bash -c 'until curl -sf http://localhost:3000; do sleep 1; done'
 
-      - name: Run Tests
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.12.3'  # Specify the desired Python version
+
+      - name: Clone Test Suite Repository
+        uses: actions/checkout@v2
+        with:
+          repository: Pikes007/sw_requirements  # Specify your test suite repository
+          path: tests  # Clone the test suite into 'tests' directory
+
+      - name: Install Test Dependencies
         run: |
-          cd frontend
-          # Add commands here to run your tests against the running project
+          cd tests
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          
+      - name: Run Python Tests
+        run: |
+          cd tests
+          pytest -v -s  # Execute Python tests using pytest
+
+      # Additional steps can be added here for further actions or notifications
+
 
