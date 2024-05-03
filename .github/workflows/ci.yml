@@ -12,11 +12,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: frontend
-
     steps:
     - name: Setup Chrome and Chromedriver
       uses: browser-actions/setup-chrome@latest
@@ -34,16 +29,11 @@ jobs:
       with:
         node-version: '21.2.0'
 
-    - name: Install Application Dependencies
+    - name: Install build and start application
       run: |
+        cd frontend
         yarn install
-
-    - name: Build Application
-      run: |
         yarn build
-
-    - name: Start Application
-      run: |
         yarn start > /dev/null 2>&1 &  # Start the Next.js application in the background and suppress output
         echo "Waiting for application to start..."
         timeout 300s bash -c 'until curl -sSf http://localhost:3000 >/dev/null; do sleep 5; done'
@@ -63,13 +53,13 @@ jobs:
   
     - name: Install Test Dependencies
       run: |
-        
+        cd tests
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
     - name: Run Python Tests
       run: |
-        
+        cd tests
         pytest -v -s || exit 1 # Execute Python tests using pytest
 
       
