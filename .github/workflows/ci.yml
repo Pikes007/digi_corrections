@@ -49,17 +49,13 @@ jobs:
     - name: Install Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.12.3'  
+        python-version: '3.11.9'  
   
     - name: Install Test Dependencies
       run: |
         cd tests
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-
-    - name: Install webdriver_manager
-      run: |
-          pip install webdriver-manager
 
     - name: Run Python Tests
       run: |
