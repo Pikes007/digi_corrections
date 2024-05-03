@@ -14,67 +14,62 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Application Repository
-        uses: actions/checkout@v2
-        with:
-          repository: MindfulMichaelJames/star-wars  
-          path: frontend  
+    - name: Setup Chrome and Chromedriver
+      uses: browser-actions/setup-chrome@latest
+      with:
+        version: 'latest' 
+        chromedriver-version: '124.0.6367.91'
+        
+    - name: Checkout Application Repository
+      uses: actions/checkout@v2
+      with:
+        repository: MindfulMichaelJames/star-wars  
+        path: frontend  
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '21.2.0'
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '21.2.0'
 
-      - name: Install Application Dependencies
-        run: |
-          cd frontend
-          yarn install
+    - name: Install Application Dependencies
+      run: |
+        cd frontend
+        yarn install
 
-      - name: Build Application
-        run: |
-          cd frontend
-          yarn build
+    - name: Build Application
+      run: |
+        cd frontend
+        yarn build
 
-      - name: Start Application
-        run: |
-          cd frontend
-          yarn start &
-          echo "Waiting for the application to start..."
-          timeout 60s bash -c 'until curl -sf http://localhost:3000; do sleep 1; done'
+    - name: Start Application
+      run: |
+        cd frontend
+        yarn start &
+        echo "Waiting for the application to start..."
+        timeout 60s bash -c 'until curl -sf http://localhost:3000; do sleep 1; done'
 
-      - name: Clone Test Suite Repository
-        uses: actions/checkout@v2
-        with:
-          repository: Pikes007/sw_requirements  
-          ref: main
-          path: tests  
+    - name: Clone Test Suite Repository
+      uses: actions/checkout@v2
+      with:
+        repository: Pikes007/sw_requirements  
+        ref: main
+        path: tests  
           
-      - name: Install Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.12.3'  
+    - name: Install Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.12.3'  
   
-      - name: Install Test Dependencies
-        run: |
-          cd tests
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+    - name: Install Test Dependencies
+      run: |
+        cd tests
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
 
-      - name: Update ChromeDriver
-        run: |
-          CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE")
-          curl -L -o chromedriver_linux64.zip "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
-          unzip chromedriver_linux64.zip
-          chmod +x chromedriver
-          sudo mv chromedriver /usr/local/bin/
-          rm chromedriver_linux64.zip
-
-
-          
-      - name: Run Python Tests
-        run: |
-          cd tests
-          pytest -v -s || exit 1 # Execute Python tests using pytest
+    - name: Run Python Tests
+      run: |
+        cd tests
+        pytest -v -s || exit 1 # Execute Python tests using pytest
 
       
 
