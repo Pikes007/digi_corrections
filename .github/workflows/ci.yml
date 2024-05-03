@@ -63,13 +63,13 @@ jobs:
   
     - name: Install Test Dependencies
       run: |
-        cd tests
+        
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
     - name: Run Python Tests
       run: |
-        cd tests
+        
         pytest -v -s || exit 1 # Execute Python tests using pytest
 
       
