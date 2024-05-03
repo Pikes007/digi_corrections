@@ -44,7 +44,13 @@ jobs:
 
     - name: Start Application
       run: |
-        yarn start 
+        yarn start > /dev/null 2>&1 &  # Start the Next.js application in the background and suppress output
+        echo "Waiting for application to start..."
+        until $(curl --output /dev/null --silent --head --fail http://localhost:3000); do
+          echo "Application not yet ready, retrying..."
+          sleep 5
+        done
+        echo "Application is running and ready for tests 
 
     - name: Clone Test Suite Repository
       uses: actions/checkout@v2
