@@ -44,7 +44,7 @@ jobs:
 
     - name: Start Application
       run: |
-        yarn start > /dev/null 2>&1 &  # Start the Next.js application in the background and suppress output
+        yarn start 
         echo "Waiting for application to start..."
         until $(curl --output /dev/null --silent --head --fail http://localhost:3000); do
           echo "Application not yet ready, retrying..."
